@@ -6,14 +6,12 @@ app.service('rest', function($http){
         return $http.get('http://jsonplaceholder.typicode.com/posts')
     }
 
-    this.getComments = function(num){
-        return $http.get('http://jsonplaceholder.typicode.com/posts/'+num+'/comments')
-    }
-    
+    this.getComments = function(){
+        return $http.get('http://jsonplaceholder.typicode.com/comments')
+    }   
 })
 
-app.controller('postController', ['$scope', '$rootScope', 'rest', function($scope, $rootScope, rest){
-    $scope.name = 'This is name';
+app.controller('controller', ['$scope', '$rootScope', 'rest', function($scope, $rootScope, rest){
     rest.getPosts()
         .success(function(res){
             console.log(res)
@@ -23,15 +21,7 @@ app.controller('postController', ['$scope', '$rootScope', 'rest', function($scop
             console.log(err)
         })
 
-    $scope.deletePost = function(id){
-        $scope.postData.splice(id,1);
-    }
-}])
-
-app.controller('commentController', ['$scope', 'rest', '$rootScope', function($scope, rest, $rootScope){
-    $scope.commentData = "";
-    $rootScope.getComments = function(id){
-        rest.getComments(id+1)
+    rest.getComments()
             .success(function(result){
                 console.log(result)
                 $scope.commentData = result;
@@ -39,20 +29,50 @@ app.controller('commentController', ['$scope', 'rest', '$rootScope', function($s
             .error(function(){
                 console.log(error)
             })
+
+    $scope.deletePost = function(id){
+        console.log(id);
+        $scope.postData.splice(id-1,1);
     }
+
+    $scope.getComments = function(index){
+        if($scope.view){
+            if($scope.view == index){
+                $scope.view = undefined;
+            }else{
+                $scope.view = index;
+            }
+        }else{
+            $scope.view = index;
+        }
+    }
+
     $scope.deleteComment = function(idx){
+        console.log(idx);
         $scope.commentData.splice(idx,1);
     }
 }])
 
 app.directive('post', function(){
     return {
-        templateUrl: 'templates/posts.html'
+        templateUrl: 'templates/posts.html',
+        scope: {
+            postData: "@",
+            indexVal: "@",
+            postId: "@",
+            deletePostFunction: "&",
+            getCommentsFunction: "&"
+        }
     }   
 })
 
 app.directive('comment', function(){
     return {
-        templateUrl: 'templates/comments.html'
+        templateUrl: 'templates/comments.html',
+        scope: {
+            commentData: "=",
+            postId: "@",
+            deleteCommentFunction: "&"
+        }
     }   
 })

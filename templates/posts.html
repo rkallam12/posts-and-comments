@@ -1,14 +1,10 @@
 <div>
-    <p>
-        {{ item.body }} 
-        <button ng-click="getComments($index)">View Comments</button>
-        <button ng-click="deletePost($index)">Delete post</button>
+    <p>{{ indexVal }}. 
+        {{ postData }} 
+        <button ng-click="getCommentsFunction({index: postId})" class="btn btn-success"> Show/Hide Comments</button>
+        <button ng-click="deletePostFunction({index: indexVal})" class="btn btn-danger">Delete post</button>
     </p>
-    <div ng-controller="commentController">
-                        <div ng-repeat="comment in commentData track by $index">
-                            <comment></comment>
-                        </div>
-                    </div>
+                      
     
     
 </div>

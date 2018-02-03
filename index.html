@@ -4,15 +4,30 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Posts and Comments</title>
-        <script type="text/javascript" src="https://code.angularjs.org/1.5.5/angular.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="styles.css">
+        <script type="text/javascript" src="https://code.angularjs.org/1.5.5/angular.min.js"></script>
     </head>
     <body ng-app="postsAndComments">
         <div id="body">
-            <div ng-controller="postController">
-                <div ng-repeat="item in postData track by $index">
-                    <post></post>
-                    <hr/>
+            <div ng-controller="controller">
+                <div class="list-group">
+                    <div ng-repeat="post in postData track by $index" class="list-group-item">
+                        <post
+                            index-val="{{ $index+1 }}"
+                            post-data="{{ post.body }}"
+                            post-id = "{{ post.id }}" 
+                            delete-post-function="deletePost(index)"
+                            get-comments-function="getComments(index)">
+                        </post>
+                        <div ng-show="view == post.id">
+                            <comment
+                                comment-data="commentData"
+                                delete-comment-function="deleteComment(index)"
+                                post-id="{{ post.id }}">
+                            </comment>
+                        </div>
+                    </div>                  
                 </div> 
             </div>
         </div>

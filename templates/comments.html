@@ -1,2 +1,7 @@
 
-<p>{{ comment.body }} <button ng-click="deleteComment($index)">Delete Comment</button></p>
+
+<div class="comments" class="list-group">
+    <div ng-repeat="comment in commentData track by $index" ng-if="postId == comment.postId" class="list-group-item">
+        <p>{{ comment.body }} <button ng-click="deleteCommentFunction({index: $index})" class="btn btn-error">Delete Comment</button></p>
+    </div>
+</div>
